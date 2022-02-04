@@ -5,16 +5,19 @@ const { NotFoundError } = require('../errors/not-found-err');
 const { CastError } = require('../errors/cast-err');
 const { ExistFieldError } = require('../errors/exist-field-err');
 const { ValidationError } = require('../errors/validation-err');
-const { SECRET_KEY, COOKIE_KEY, COOKIE_OPTIONS } = require('../utils/constants');
+const { AuthError } = require('../errors/auth-err');
+const {
+  SECRET_KEY,
+  COOKIE_KEY,
+  COOKIE_OPTIONS,
+  ADMIN_EMAIL,
+  ADMIN_PASSWORD,
+} = require('../utils/constants');
 
-const getUsers = (req, res) => {
-  const tempUsers = [
-    { _id: 1, name: 'Ivan' },
-    { _id: 2, name: 'Umyar' },
-    { _id: 3, name: 'Sergey' },
-  ];
-
-  res.send({ data: tempUsers });
+const getUsers = (req, res, next) => {
+  User.find({})
+    .then((data) => res.send({ data }))
+    .catch(next);
 };
 
 const signOut = (req, res) => res.clearCookie(COOKIE_KEY).send({ message: 'Куки удалены' });
@@ -22,13 +25,12 @@ const signOut = (req, res) => res.clearCookie(COOKIE_KEY).send({ message: 'Ку�
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
-  User.findUserByCredentials(email, password)
-    .then((user) => {
-      // аутентификация успешна! пользователь в переменной user
-      const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
-      res.cookie(COOKIE_KEY, token, COOKIE_OPTIONS).send({ data: user.toJSON() });
-    })
-    .catch(next);
+  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    const token = jwt.sign({ _id: 'admin' }, SECRET_KEY, { expiresIn: '7d' });
+    res.cookie(COOKIE_KEY, token, COOKIE_OPTIONS).send({ message: 'Куки установлены' });
+  } else {
+    next(new AuthError('Неправильные почта или пароль'));
+  }
 };
 
 const createUser = (req, res, next) => {

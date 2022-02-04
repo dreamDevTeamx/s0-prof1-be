@@ -19,6 +19,8 @@ const {
   MONGO_URL = 'mongodb://localhost:27017/dreamDevTeamx',
   NODE_ENV,
   JWT_SECRET,
+  ADMIN_EMAIL,
+  ADMIN_PASSWORD,
 } = process.env;
 
 const SECRET_KEY = NODE_ENV === 'production' ? JWT_SECRET : 'dev-key';
@@ -30,4 +32,6 @@ module.exports = {
   SECRET_KEY,
   COOKIE_KEY,
   COOKIE_OPTIONS,
+  ADMIN_EMAIL,
+  ADMIN_PASSWORD,
 };

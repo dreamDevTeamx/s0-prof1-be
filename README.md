@@ -1,30 +1,5 @@
 # s0-prof1-be
 
-Порт по умолчанию `PORT=3005`
-
-`GET http://localhost:3005/users`
-
-Ответ
-
-```
-{
-    "data": [
-        {
-            "_id": 1,
-            "name": "Ivan"
-        },
-        {
-            "_id": 2,
-            "name": "Umyar"
-        },
-        {
-            "_id": 3,
-            "name": "Sergey"
-        }
-    ]
-}
-```
-
 Запуск:
 
 - Режим **development** (с hot reload): `npm run dev`
@@ -42,3 +17,27 @@
 ```
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'));"
 ```
+
+Пример файла .ENV
+
+```
+PORT=3000
+NODE_ENV=production
+JWT_SECRET=381250dfc37b1946ed3b4f0fc211c4ae4307f254a3798c90a309bf5d4367e08d
+ADMIN_EMAIL=admin@admin.ru
+ADMIN_PASSWORD=Se!cretPwd@
+```
+
+**Эндпоинты**
+
+Логин
+
+`POST localhost:3005/signin`
+
+Создать пользователя (доступно после аутентификации)
+
+`POST localhost:3005/signup`
+
+Получить пользователей
+
+`GET http://localhost:3005/users`

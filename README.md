@@ -41,3 +41,12 @@ ADMIN_PASSWORD=Se!cretPwd@
 Получить пользователей
 
 `GET http://localhost:3005/users`
+
+**Running MongoDB as a Docker Container**
+
+Если вы хотите сохранить данные на своем локальном компьютере, вы можете смонтировать том, используя аргумент -v.
+
+```
+docker run --rm --name mongodb -d -p 27017:27017 -v YOUR_LOCAL_DIR:/data/db mongo
+```
+https://www.mongodb.com/compatibility/docker
